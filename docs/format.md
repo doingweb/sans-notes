@@ -27,6 +27,11 @@ Conventions used below:
 - **Base64** is standard, padded base64 (RFC 4648 §4).
 - **Times** are ISO 8601 strings in UTC, e.g. `2026-10-29T18:04:11.532Z`.
 - **UTF-8(x)** is the UTF-8 encoding of string `x`.
+- **Labels inside the format** — associated data, the HKDF `info`, the
+  database name, the export's `format` field — never contain the product's
+  name, so the app can be renamed without a format change. They don't need to
+  be globally unique: each vault has its own random master key, so one app's
+  blobs can never open under another's.
 - **`‖`** is byte concatenation.
 
 ## The key hierarchy
@@ -70,10 +75,10 @@ another slot fails to decrypt instead of decrypting as the wrong thing:
 
 | Blob                     | Associated data                                       |
 | ------------------------ | ----------------------------------------------------- |
-| Note with id `<id>`      | `UTF-8("tuck-notes/v1/note/<id>")`                    |
-| The index                | `UTF-8("tuck-notes/v1/index")`                        |
-| Passphrase-wrapped key   | `UTF-8("tuck-notes/v1/key/passphrase")`               |
-| Passkey-wrapped key      | `UTF-8("tuck-notes/v1/key/passkey/<credentialId>")` where `<credentialId>` is its base64 |
+| Note with id `<id>`      | `UTF-8("notes/v1/note/<id>")`                    |
+| The index                | `UTF-8("notes/v1/index")`                        |
+| Passphrase-wrapped key   | `UTF-8("notes/v1/key/passphrase")`               |
+| Passkey-wrapped key      | `UTF-8("notes/v1/key/passkey/<credentialId>")` where `<credentialId>` is its base64 |
 
 ### Padding
 
@@ -128,7 +133,7 @@ wrapped copies of the master key — and is stored and exported as JSON:
    `userVerification: "required"` and the PRF extension evaluating `prfSalt`.
    The relying party ID is `tuck.apps.theantes.family`.
 2. KEK = HKDF-SHA-256(input = the 32-byte PRF result, salt = empty,
-   info = `UTF-8("tuck-notes/v1/kek/passkey")`, 32 bytes).
+   info = `UTF-8("notes/v1/kek/passkey")`, 32 bytes).
 3. Master key = open `passkey.wrappedKey` with the KEK.
 
 This path cannot be reproduced outside a browser with access to the passkey,
@@ -231,7 +236,7 @@ reset to their defaults; the notes themselves are unaffected.
 
 ## Browser storage
 
-One IndexedDB database, `tuck-notes`, with two object stores:
+One IndexedDB database, `vault`, with two object stores:
 
 | Store   | Key         | Value                          |
 | ------- | ----------- | ------------------------------ |
@@ -249,7 +254,7 @@ or the Cache API except the app's own code.
 
 ```json
 {
-  "format": "tuck-notes-export",
+  "format": "notes-export",
   "version": 1,
   "keyring": { "…": "exactly as above" },
   "index": "<base64 sealed blob>",

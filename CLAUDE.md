@@ -67,6 +67,8 @@ decrypting it without our code. So:
   the spec is right and the code is the bug — or the spec needs fixing first.
 - Never change associated-data strings, KDF parameters, or padding rules
   without a version bump.
+- Keep the product's name out of every label inside the format, so a rename
+  only touches the domain and user-facing text.
 
 ## Toolchain
 
