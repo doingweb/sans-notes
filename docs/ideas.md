@@ -130,7 +130,7 @@ that it's worth carrying. Password managers already do this well.
 
 ## A decrypt script for Windows without Node
 
-`tuck-decrypt.mjs` needs Node.js. A PowerShell version would let Windows users
+`sans-decrypt.mjs` needs Node.js. A PowerShell version would let Windows users
 decrypt with nothing installed — PowerShell can reach .NET's `AesGcm` and
 `Rfc2898DeriveBytes`.
 
@@ -178,7 +178,7 @@ import adding passkeys the local keyring lacks.
 
 ## Richer exported files
 
-Make `tuck-decrypt.mjs`'s output carry more than the body:
+Make `sans-decrypt.mjs`'s output carry more than the body:
 
 - YAML frontmatter with the title, `created`, and `updated` — the title
   otherwise survives only in the file name, which loses characters to

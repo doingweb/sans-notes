@@ -1,9 +1,9 @@
-# Tuck Notes
+# Sans Notes
 
 > Private notes that never leave your device unencrypted — a small web app you
 > can read end to end.
 
-Tuck Notes is a minimalist Markdown notebook for things you would not write
+Sans Notes is a minimalist Markdown notebook for things you would not write
 anywhere else. It runs entirely in the browser as an installable web app (PWA).
 Notes are encrypted on your device before they are stored, unlocked with your
 device's screen lock through a passkey, and can always be exported and decrypted
@@ -77,7 +77,7 @@ installed to your home screen. Install the app, and export regularly.
 
 ## Getting your notes out
 
-**Export** downloads a single file, `tuck-export.json`, holding your encrypted
+**Export** downloads a single file, `sans-export.json`, holding your encrypted
 notes exactly as stored, plus everything needed to unlock them with your
 passphrase. Nothing in it is readable without that passphrase.
 
@@ -85,20 +85,20 @@ passphrase. Nothing in it is readable without that passphrase.
 vault on another device (the newer copy of each note wins). It unlocks with the
 passkey if that device has it, or the passphrase if not.
 
-**Decrypt it yourself** with [`tuck-decrypt.mjs`](https://tuck.apps.theantes.family/tuck-decrypt.mjs),
+**Decrypt it yourself** with [`sans-decrypt.mjs`](https://sans.apps.theantes.family/sans-decrypt.mjs),
 a dependency-free script that runs on [Node.js](https://nodejs.org/) 20 or
 newer. It reads the passphrase from standard input, so it never appears on
 screen or in your shell history:
 
 ```console
-read -rs PASS && printf '%s' "$PASS" | node tuck-decrypt.mjs tuck-export.json notes/
+read -rs PASS && printf '%s' "$PASS" | node sans-decrypt.mjs sans-export.json notes/
 unset PASS
 ```
 
 …or straight from your password manager's CLI:
 
 ```console
-op read "op://Private/Tuck Notes/password" | node tuck-decrypt.mjs tuck-export.json notes/
+op read "op://Private/Sans Notes/password" | node sans-decrypt.mjs sans-export.json notes/
 ```
 
 You get one `Note Title.md` file per note. The script is built from the same
@@ -150,7 +150,7 @@ bun run check        # typecheck, lint, format check
 bun run build        # → dist/
 ```
 
-Pushing to `main` deploys to <https://tuck.apps.theantes.family/> through
+Pushing to `main` deploys to <https://sans.apps.theantes.family/> through
 GitHub Actions.
 
 ## Layout
@@ -158,7 +158,7 @@ GitHub Actions.
 - `src/crypto/` — encryption, key derivation, the keyring, passphrase policy.
 - `src/vault/` — notes, the index, storage, import merging.
 - `src/passkey/` — WebAuthn PRF unlock.
-- `src/export/` — export and import files, and the `tuck-decrypt.mjs` entry
+- `src/export/` — export and import files, and the `sans-decrypt.mjs` entry
   point.
 - `src/app/` — the UI.
 - `src/pwa/` — the service worker and update prompt.

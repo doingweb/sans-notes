@@ -4,7 +4,7 @@ Guidance for Claude Code when working in this repo.
 
 ## What this is
 
-**Tuck Notes**: a minimalist, end-to-end encrypted, local-only Markdown notes
+**Sans Notes**: a minimalist, end-to-end encrypted, local-only Markdown notes
 app. Web-only, an installable PWA, no backend. Read these before changing
 anything substantial:
 
@@ -52,7 +52,7 @@ These are not style preferences. Breaking one is a bug even if the tests pass.
   means every note is readable.
 - **The app sends nothing.** Pages are served with `connect-src 'none'`. Never
   add analytics, error reporting, remote fonts, or any third-party origin.
-- **The passkey relying party ID is `tuck.apps.theantes.family`.** Changing the
+- **The passkey relying party ID is `sans.apps.theantes.family`.** Changing the
   domain orphans every passkey and every browser's stored notes. Don't.
 
 ## Changing the format
@@ -63,7 +63,7 @@ decrypting it without our code. So:
 - Any change to stored or exported bytes **bumps the format version**, updates
   `docs/format.md` in the same commit, adds test vectors, and **keeps reading
   every older version**.
-- `tuck-decrypt.mjs` and `docs/format.md` move in lockstep. If they disagree,
+- `sans-decrypt.mjs` and `docs/format.md` move in lockstep. If they disagree,
   the spec is right and the code is the bug — or the spec needs fixing first.
 - Never change associated-data strings, KDF parameters, or padding rules
   without a version bump.
@@ -73,7 +73,7 @@ decrypting it without our code. So:
 ## Toolchain
 
 **Bun** for running, bundling, and testing. Not Node, not npm, not Deno. Node
-is used only to run the built `tuck-decrypt.mjs` in its end-to-end test,
+is used only to run the built `sans-decrypt.mjs` in its end-to-end test,
 because that is what users will run it with.
 
 ```bash
@@ -119,14 +119,14 @@ written. Update `docs/plan.md` when a milestone's scope or findings change.
   is cache-first, so a rebuild can look like a change that didn't work.
   Unregister it and clear site data before believing what a browser shows.
 - **Passkeys are bound to the domain they were made on.** Test passkeys on
-  `localhost` or `antes-tuck-notes.web.app`, never the production domain.
+  `localhost` or `sans-notes.web.app`, never the production domain.
 - Check storage in dev tools after any change that writes: nothing readable
   before unlock.
 
 ## Deploy
 
-Firebase Hosting, project `antes-tuck-notes`, served at
-<https://tuck.apps.theantes.family/>. GitHub Actions checks, builds, and deploys
+Firebase Hosting, project `sans-notes`, served at
+<https://sans.apps.theantes.family/>. GitHub Actions checks, builds, and deploys
 on push to `main`, in the same shape as `~/Code/songbook`'s workflow with Bun in
 place of Deno. Security headers, including the CSP, live in `firebase.json`;
 treat changes there as security changes.

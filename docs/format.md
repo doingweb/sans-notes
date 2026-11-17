@@ -1,9 +1,9 @@
 # Storage and encryption format
 
-The contract for everything Tuck Notes writes: what is in the browser's storage,
+The contract for everything Sans Notes writes: what is in the browser's storage,
 what is in an export, and how to decrypt it. It is written so that someone could
 recover their notes **without this app or this repository's code** — the
-`tuck-decrypt.mjs` script is one implementation of this document, not the
+`sans-decrypt.mjs` script is one implementation of this document, not the
 definition of it.
 
 This is format **version 1**. Draft until the MVP ships; after that, any change
@@ -131,7 +131,7 @@ wrapped copies of the master key — and is stored and exported as JSON:
 
 1. Call `navigator.credentials.get` for `credentialId` with
    `userVerification: "required"` and the PRF extension evaluating `prfSalt`.
-   The relying party ID is `tuck.apps.theantes.family`.
+   The relying party ID is `sans.apps.theantes.family`.
 2. KEK = HKDF-SHA-256(input = the 32-byte PRF result, salt = empty,
    info = `UTF-8("notes/v1/kek/passkey")`, 32 bytes).
 3. Master key = open `passkey.wrappedKey` with the KEK.
@@ -170,7 +170,7 @@ from it, and it may begin however it likes.
 ### Display title
 
 Wherever a note has to be named — the note list, and the files
-`tuck-decrypt.mjs` writes — it uses its **display title**:
+`sans-decrypt.mjs` writes — it uses its **display title**:
 
 1. `title`, if the note has one;
 2. otherwise, `Note from ` followed by its `created` time in local time.
@@ -180,7 +180,7 @@ alone and never decrypts a note the user didn't open. The display title is
 computed when it is shown and never stored.
 
 The app formats the time for the reader's locale (`Note from Oct 29, 2026,
-6:04 PM`). `tuck-decrypt.mjs` writes it as `YYYY-MM-DD HH.MM`
+6:04 PM`). `sans-decrypt.mjs` writes it as `YYYY-MM-DD HH.MM`
 (`Note from 2026-10-29 18.04`), which sorts by date in a file listing and
 avoids `:`, which several file systems forbid.
 
@@ -250,7 +250,7 @@ or the Cache API except the app's own code.
 
 ## The export file
 
-`tuck-export.json`:
+`sans-export.json`:
 
 ```json
 {
@@ -275,7 +275,7 @@ export time.
 3. Parse the plaintext as JSON. The note's title is `title` (absent if it has
    none) and its Markdown is `body`.
 
-### What `tuck-decrypt.mjs` writes
+### What `sans-decrypt.mjs` writes
 
 One file per note, named after its display title, made safe for every common
 file system: characters in `/ \ : * ? " < > |` and control characters become

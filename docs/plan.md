@@ -15,14 +15,14 @@ permanently, empty Trash) · raw Markdown editor with continuous autosave · an
 optional title, separate from the body · note list sorted by last edit, showing
 each note's display title · passkey unlock with passphrase fallback · auto-lock
 when idle (a setting, default 5 minutes) and when hidden · export · import
-(restore and same-vault merge) · `tuck-decrypt.mjs` · installable, offline,
+(restore and same-vault merge) · `sans-decrypt.mjs` · installable, offline,
 asks before updating.
 
 **Out:** everything in [`ideas.md`](ideas.md).
 
 ## M0 — Spike: prove the platform
 
-Throwaway code, deployed to `https://antes-tuck-notes.web.app` — deliberately
+Throwaway code, deployed to `https://sans-notes.web.app` — deliberately
 **not** the production domain, so spike passkeys never bind to it.
 
 - Create a passkey with PRF and read the PRF output on each target: iPhone
@@ -44,13 +44,13 @@ must-have target, stop and rethink unlock before building more.
 - Bun, pinned. `tsconfig.json` in strict mode. Dev dependencies only:
   `typescript`, `@types/bun`, and Biome for formatting and linting.
 - `scripts/build.ts` using `Bun.build`: the app bundle, the service worker, and
-  `tuck-decrypt.mjs` (targeting Node), unminified, with linked source maps.
+  `sans-decrypt.mjs` (targeting Node), unminified, with linked source maps.
   Package scripts: `dev`, `build`, `check`, `test`.
-- Firebase project `antes-tuck-notes`, `firebase.json` with the security
+- Firebase project `sans-notes`, `firebase.json` with the security
   headers (strict CSP with `connect-src 'none'` for pages, `'self'` for
   `/sw.js`; `frame-ancestors 'none'`; `no-referrer`; `nosniff`; `no-cache` on
   `/sw.js`), and the GitHub Actions deploy workflow modelled on songbook's.
-- Custom domain `tuck.apps.theantes.family` (see the `setup-firebase-app`
+- Custom domain `sans.apps.theantes.family` (see the `setup-firebase-app`
   skill).
 
 **Done when:** a placeholder page is live on the domain, CI checks and deploys
@@ -81,7 +81,7 @@ from nothing but a passphrase.
   lifecycle (trash, restore, delete permanently, empty), where permanent
   deletion leaves no trace; rebuilding a lost index from the notes.
 - The display title (`docs/format.md`) as a pure function shared with
-  `tuck-decrypt.mjs`.
+  `sans-decrypt.mjs`.
 - Same-vault merge (newer `updated` wins; notes only in the export are added)
   as a pure function.
 - `navigator.storage.persist()` on setup.
@@ -96,7 +96,7 @@ harness.
   keyring.
 - Unlock: passkey first, passphrase as fallback, with clear feature detection
   when PRF is unavailable.
-- Relying party ID fixed to `tuck.apps.theantes.family`.
+- Relying party ID fixed to `sans.apps.theantes.family`.
 
 **Done when:** on the maintainer's phone and laptop, the vault unlocks with the
 screen lock.
@@ -132,11 +132,11 @@ missing feature that's in scope.
 
 ## M7 — Export, import, and the decrypt script
 
-- Export `tuck-export.json`.
+- Export `sans-export.json`.
 - Import: restore into an empty browser, merge into the same vault, refuse a
   different vault. Unlock the export with its passkey if this device has it,
   or the passphrase. Verify every blob before writing anything.
-- `tuck-decrypt.mjs`: passphrase from stdin, one Markdown file per note, safe
+- `sans-decrypt.mjs`: passphrase from stdin, one Markdown file per note, safe
   file names. Served from the site and linked from the export screen.
 - An end-to-end test: export from the vault in Bun, run the built script under
   Node, compare the files.
